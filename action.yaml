@@ -204,7 +204,7 @@ runs:
             -print0)
 
         echo "<table>" >> $GITHUB_STEP_SUMMARY
-        echo "<tr><th></th><th>File</th></tr>" >> $GITHUB_STEP_SUMMARY
+        echo "<tr><th>File</th><th>Status</th></tr>" >> $GITHUB_STEP_SUMMARY
 
         set +e
         if [[ -n "${INPUT_CHECK_TOGETHER}" ]]; then
@@ -217,9 +217,9 @@ runs:
             statuscode=$?
             if "$statuscode"
             then
-              echo "<tr><td>✔️ </td><td>$file</td></tr>" >> $GITHUB_STEP_SUMMARY
+              echo "<tr><td>$file</td><td>✔️ </td></tr>" >> $GITHUB_STEP_SUMMARY
             else
-              echo "<tr><td>❌</td><td>$file</td></tr>" >> $GITHUB_STEP_SUMMARY
+              echo "<tr><td>$file</td><td>❌</td></tr>" >> $GITHUB_STEP_SUMMARY
             fi
           done
         fi
