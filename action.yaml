@@ -204,8 +204,9 @@ runs:
             -print0)
 
         echo "<table>" >> $GITHUB_STEP_SUMMARY
-        echo "<tr><th></th><th>File</th></tr>\n" >> $GITHUB_STEP_SUMMARY
+        echo "<tr><th></th><th>File</th></tr>" >> $GITHUB_STEP_SUMMARY
 
+        set +e
         if [[ -n "${INPUT_CHECK_TOGETHER}" ]]; then
           "${{ github.action_path }}/shellcheck" \
             ${INPUT_SHELLCHECK_OPTIONS} \
