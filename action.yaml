@@ -203,17 +203,26 @@ runs:
             -type f ! -name '*.*' -perm /111 \
             -print0)
 
+        echo "<table>" >> $GITHUB_STEP_SUMMARY
+        echo "<tr><th></th><th>File</th></tr>\n" >> $GITHUB_STEP_SUMMARY
+
         if [[ -n "${INPUT_CHECK_TOGETHER}" ]]; then
           "${{ github.action_path }}/shellcheck" \
             ${INPUT_SHELLCHECK_OPTIONS} \
             "${filepaths[@]}" || statuscode=$?
         else
           for file in "${filepaths[@]}"; do
-            "${{ github.action_path }}/shellcheck" \
-              ${INPUT_SHELLCHECK_OPTIONS} \
-              "$file" || statuscode=$?
+            "${{ github.action_path }}/shellcheck" ${INPUT_SHELLCHECK_OPTIONS} "$file"
+            statuscode=$?
+            if "$statuscode"
+            then
+              echo "<tr><td>✔️ </td><td>$file</td></tr>" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "<tr><td>❌</td><td>$file</td></tr>" >> $GITHUB_STEP_SUMMARY
+            fi
           done
         fi
+        echo "</table>" >> $GITHUB_STEP_SUMMARY
 
         echo "filepaths=${filepaths[@]}" >> $GITHUB_OUTPUT
         echo "statuscode=$statuscode" >> $GITHUB_OUTPUT
