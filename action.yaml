@@ -215,7 +215,7 @@ runs:
           for file in "${filepaths[@]}"; do
             "${{ github.action_path }}/shellcheck" ${INPUT_SHELLCHECK_OPTIONS} "$file"
             statuscode=$?
-            if "$statuscode"
+            if [ "$statuscode" -eq "0" ]
             then
               echo "<tr><td>$file</td><td>✔️ </td></tr>" >> $GITHUB_STEP_SUMMARY
             else
